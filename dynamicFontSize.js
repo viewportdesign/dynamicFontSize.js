@@ -2,13 +2,21 @@
 // You're allowed to rewrite, share or do whatever you want with it 
 // It is pretty straight forward but if you've questions you can mail me:danielresch8@gmail.com
 
+
+
 	
 	
 	// Adjust To YOUR Needs
-	var baseWidth = 1400; // replace with the width you like to style it in px with
+	var baseWidth = 1000; // replace with the width you like to style it in px with
 	var minFontSize = 10; // min font-size in px
 	var maxFontSize = 48; // max font-size in px
 	
+	var excludeSelectors = '#items *';
+	
+	
+	$(document).ready(function(e) {
+        DynamicFontSize.init();
+    }); 
 	
 
 var DynamicFontSize = {
@@ -16,21 +24,32 @@ var DynamicFontSize = {
 	
 	init: function()
 	{	
+
+		// if there's a Ajax Loader show loader and hide until done 
+		$('#wrapper').hide();
+		$('.ajax-loader').show();
+		
 		// Add the BaseFont Size Param to all px DOM Elements
 		$('*').each(function(index, element) {
             
+			
+			
+			if( $(this).is(excludeSelectors) ) {}
+			else
+			 {
 			// Check if px -> otherwise leave as is 
-			if( $(this).css('font-size') != null) 
-			{
-				$(this).attr('base-fontsize',$(this).css('font-size')); 
-			}
+				if( $(this).css('font-size') != null) 
+				{
+					$(this).attr('base-fontsize',$(this).css('font-size')); 
+				}
+			 }
 			
 			
         });
 		
 		
 		// Bind to Event Handler
-		$(window).resize(function() 
+		$(window).off('resize').resize(function() 
 		{
 				var size_old;
 				var size_new;
@@ -41,6 +60,9 @@ var DynamicFontSize = {
 		// Do it Once
 		DynamicFontSize.resize();
 
+		
+		$('.ajax-loader').hide();
+		$('#wrapper').show();
 		
 	},
 	resize: function() 
